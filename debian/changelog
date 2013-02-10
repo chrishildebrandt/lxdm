@@ -1,0 +1,7 @@
+lxdm (0.4.1+git20130209-0) unstable; urgency=low
+
+   * new maintainer upload by Chris Hilebrandt <slam@aptosid.com>
+   * debian packaging for ITP #560004
+   * several fixes to 0.4.1 Debian packaging
+
+ -- Chris Hildebrandt <slam@aptosid.com>  Sat, 09 Feb 2011 12:00:00 +0100
