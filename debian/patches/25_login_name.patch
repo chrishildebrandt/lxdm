@@ -1,0 +1,20 @@
+--- lxdm-0.4.1.orig/src/greeter.c	2011-07-29 15:42:33.000000000 +0200
++++ lxdm-0.4.1/src/greeter.c	2012-05-08 20:52:22.000000000 +0200
+@@ -911,13 +911,16 @@ static gboolean load_user_list(GtkWidget
+ 	}
+ 	for(i=0;i<count;i++)
+ 	{		
+-		char *gecos,*face_path,*display;
++		char *gecos,*face_path,*display,*comma;
+ 		gboolean login;
+ 		GdkPixbuf *face=NULL;
+ 		gtk_list_store_append(model,&iter);
+ 		gecos=g_key_file_get_string(kf,users[i],"gecos",0);
+ 		face_path=g_key_file_get_string(kf,users[i],"face",0);
+ 		login=g_key_file_get_boolean(kf,users[i],"login",0);
++		comma=gecos?g_strstr_len(gecos, strlen(gecos), ","):NULL;
++		if (comma)
++			*comma='\0';
+ 		if(face_path)
+ 			face=gdk_pixbuf_new_from_file_at_scale(face_path,48,48,TRUE,NULL);
+ 		if(!face)

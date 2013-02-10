@@ -1,0 +1,56 @@
+Description: Adapt to the Oneiric model for setting languages/locales.
+Forwarded: not-needed
+Author: Gunnar Hjalmarsson <ubuntu@gunnar.cc>
+
+--- lxdm.orig/data/Xsession	2011-07-29 15:42:33 +0200
++++ lxdm/data/Xsession	2011-09-30 13:53:51 +0200
+@@ -9,9 +9,20 @@
+ 	LXSESSION=/usr/bin/startlxde
+ fi
+ 
++[ -f /etc/profile ] && . /etc/profile
++[ -f ~/.profile ] && . ~/.profile
+ [ -f /etc/xprofile ] && . /etc/xprofile
+ [ -f ~/.xprofile ] && . ~/.xprofile
+ 
++# override ~/.profile if language was set on the greeter
++if [ -n "$GREETER_LANGUAGE" ]; then
++	language_list=${GREETER_LANGUAGE%.*}${GREETER_LANGUAGE#*.UTF-8}:en
++	export LANGUAGE="$language_list"
++	export LC_MESSAGES="$GREETER_LANGUAGE"
++	export LC_CTYPE="$GREETER_LANGUAGE"
++	export LC_COLLATE="$GREETER_LANGUAGE"
++fi
++
+ if [ -f /etc/X11/xinit/xinitrc-common ]; then
+ # fedora
+ 	. /etc/X11/xinit/xinitrc-common
+
+--- lxdm.orig/src/lxdm.c	2011-09-30 13:33:12 +0200
++++ lxdm/src/lxdm.c	2011-09-30 14:02:20 +0200
+@@ -1369,11 +1369,6 @@
+ 			session=g_key_file_get_string(dmrc,"Desktop","Session",NULL);
+ 			alloc_session=TRUE;
+ 		}
+-		if(!lang || !lang[0])
+-		{
+-			lang=g_key_file_get_string(dmrc,"Desktop","Language",NULL);
+-			alloc_lang=TRUE;
+-		}
+ 		g_key_file_free(dmrc);
+ 	}
+ 
+@@ -1478,9 +1473,9 @@
+ 	/* optionally override $LANG, $LC_MESSAGES, and $LANGUAGE */
+ 	if( lang && lang[0] )
+ 	{
+-		replace_env(env, "LANG=", lang);
+-		replace_env(env, "LC_MESSAGES=", lang);
+-		replace_env(env, "LANGUAGE=", lang);
++		/* use this special environment variable to set the language related
++		   env. variables from Xsession after ~/.profile has been sourced */
++		replace_env(env, "GREETER_LANGUAGE=", lang);
+ 	}
+ 	s->env = env;
+ 
+

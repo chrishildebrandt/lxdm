@@ -21,13 +21,14 @@
 
 ### BEGIN INIT INFO
 # Provides:          lxdm
-# Required-Start:    $local_fs $remote_fs
+# Should-Start:      $named console-screen dbus acpid hal consolekit
+# Required-Start:    $local_fs $remote_fs x11-common
 # Required-Stop:     $local_fs $remote_fs
-# Should-Start:      $named acpid hal
 # Should-Stop:       $named
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start lxdm
+# Short-Description: LXDE Display Manager (LXDM)
+# Description:       Debian init script for the LXDE Display Manager
 ### END INIT INFO
 
 set -e

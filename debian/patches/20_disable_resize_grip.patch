@@ -1,0 +1,20 @@
+Index: lxdm-0.4.0/src/greeter.c
+===================================================================
+--- lxdm-0.4.0.orig/src/greeter.c	2011-06-11 06:30:26.000000000 +0200
++++ lxdm-0.4.0/src/greeter.c	2011-07-24 18:03:14.000000000 +0200
+@@ -998,9 +998,13 @@
+     builder = gtk_builder_new();
+     gtk_builder_add_from_file(builder, ui_file ? ui_file : LXDM_DATA_DIR "/lxdm.glade", NULL);
+     win = (GtkWidget*)gtk_builder_get_object(builder, "lxdm");
+-#if GTK_CHECK_VERSION(3,0,0)
++
++    /*
++    Remove resize grip in Ubuntu 11.04 which break background painting
++    see https://bugs.launchpad.net/ubuntu/+source/lxdm/+bug/703658
++    */
+     gtk_window_set_has_resize_grip(GTK_WINDOW(win),FALSE);
+-#endif
++
+     gtk_widget_realize(win);
+ #if GTK_CHECK_VERSION(3,0,0)
+ 	window=gtk_widget_get_window(win);

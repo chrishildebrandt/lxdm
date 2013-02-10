@@ -1,0 +1,11 @@
+--- lxdm-0.4.1.orig/data/lxdm.conf
++++ lxdm-0.4.1/data/lxdm.conf
+@@ -16,7 +16,7 @@
+ # xauth_path=/tmp
+ 
+ ## greeter used to welcome the user
+-greeter=/usr/local/libexec/lxdm-greeter-gtk
++greeter=/usr/lib/lxdm/lxdm-greeter-gtk
+ 
+ [server]
+ ## arg used to start xserver, not fully function
